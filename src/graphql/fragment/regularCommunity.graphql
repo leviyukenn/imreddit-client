@@ -1,0 +1,16 @@
+fragment RegularCommunity on Community {
+  id
+  createdAt
+  updatedAt
+  name
+  description
+  background
+  banner
+  icon
+  backgroundColor
+  bannerColor
+  topics {
+    title
+  }
+  totalMemberships
+}

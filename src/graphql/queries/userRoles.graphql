@@ -1,0 +1,5 @@
+query UserRoles($userId: String!) {
+  userRoles(userId: $userId) {
+    ...RegularRole
+  }
+}

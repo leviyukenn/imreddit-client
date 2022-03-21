@@ -1,0 +1,18 @@
+query UserPosts(
+  $userName: String!
+  $orderType: Int
+  $limit: Int
+  $cursor: String
+) {
+  userPosts(
+    userName: $userName
+    orderType: $orderType
+    limit: $limit
+    cursor: $cursor
+  ) {
+    hasMore
+    posts {
+      ...RegularPostDetail
+    }
+  }
+}

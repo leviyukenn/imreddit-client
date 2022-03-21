@@ -1,0 +1,15 @@
+fragment RegularTextPost on Post {
+  id
+  createdAt
+  updatedAt
+  title
+  text
+  points
+  creator {
+    ...RegularUser
+  }
+  community {
+    # ...RegularCommunity
+    name
+  }
+}

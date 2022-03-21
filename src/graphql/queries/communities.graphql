@@ -1,0 +1,7 @@
+query Communities($userId: String) {
+  communities(userId: $userId) {
+    id
+    name
+    icon
+  }
+}
