@@ -1,5 +1,0 @@
-query FindUser($userName: String!) {
-  user(userName: $userName) {
-    ...RegularUser
-  }
-}

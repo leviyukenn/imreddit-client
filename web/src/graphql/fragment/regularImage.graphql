@@ -1,6 +1,0 @@
-fragment RegularImage on Image {
-    id,
-    path,
-    caption,
-    link
-}

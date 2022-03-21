@@ -1,5 +1,0 @@
-mutation ChangeUserAvatar($avatarSeed: String!) {
-  changeUserAvatar(avatarSeed: $avatarSeed) {
-    ...RegularUser
-  }
-}

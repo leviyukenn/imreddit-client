@@ -1,6 +1,0 @@
-query Topics {
-  topics {
-    title
-    id
-  }
-}

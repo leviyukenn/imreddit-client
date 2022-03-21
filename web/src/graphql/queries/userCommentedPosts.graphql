@@ -1,8 +1,0 @@
-query UserCommentedPosts($userName: String!, $limit: Int, $cursor: String) {
-  userCommentedPosts(userName: $userName, limit: $limit, cursor: $cursor) {
-    hasMore
-    posts {
-      ...RegularPostDetail
-    }
-  }
-}

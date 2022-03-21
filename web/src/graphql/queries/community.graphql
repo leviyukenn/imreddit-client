@@ -1,5 +1,0 @@
-query Community($communityName: String!) {
-  community(communityName: $communityName) {
-    ...RegularCommunity
-  }
-}
