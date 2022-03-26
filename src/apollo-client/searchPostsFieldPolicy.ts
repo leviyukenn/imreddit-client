@@ -1,4 +1,3 @@
-
 import { FieldPolicy, Reference } from "@apollo/client";
 import { OrderType } from "../graphql/types/types";
 import { PostsIncoming, PostsReadResult } from "./postsFieldPolicy";
@@ -13,8 +12,8 @@ export const searchPostsFieldPolicy: FieldPolicy<
   PostsIncoming,
   PostsReadResult
 > = {
-  keyArgs: ["keyword", "orderType","communityName"],
-  merge(existing, incoming, { args, readField }) {
+  keyArgs: ["keyword", "orderType", "communityName"],
+  merge(existing, incoming, { readField }) {
     const mergedPosts = existing ? { ...existing.posts } : {};
 
     incoming.posts.forEach((item) => {

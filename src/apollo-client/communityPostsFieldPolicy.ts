@@ -1,6 +1,6 @@
 import { FieldPolicy, Reference } from "@apollo/client";
-import { PostsIncoming, PostsReadResult } from "./postsFieldPolicy";
 import { OrderType } from "../graphql/types/types";
+import { PostsIncoming, PostsReadResult } from "./postsFieldPolicy";
 
 type CommunityPostsExisting = {
   posts: { [key: string]: Reference };
@@ -13,7 +13,7 @@ export const communityPostsFieldPolicy: FieldPolicy<
   PostsReadResult
 > = {
   keyArgs: ["communityName", "orderType"],
-  merge(existing, incoming, { args, readField }) {
+  merge(existing, incoming, { readField }) {
     const mergedPosts = existing ? { ...existing.posts } : {};
 
     incoming.posts.forEach((item) => {

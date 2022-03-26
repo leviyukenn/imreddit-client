@@ -12,7 +12,7 @@ export const userUpvotedPostsFieldPolicy: FieldPolicy<
   PostsReadResult
 > = {
   keyArgs: ["userName", "upvoteType"],
-  merge(existing, incoming, { args, readField }) {
+  merge(existing, incoming, { readField }) {
     const mergedPosts = existing ? { ...existing.posts } : {};
 
     incoming.posts.forEach((item) => {
@@ -24,7 +24,7 @@ export const userUpvotedPostsFieldPolicy: FieldPolicy<
 
   // Return all items stored so far, to avoid ambiguities
   // about the order of the items.
-  read(existing, { args, readField }) {
+  read(existing, {  readField }) {
     if (!existing) {
       return undefined;
     }

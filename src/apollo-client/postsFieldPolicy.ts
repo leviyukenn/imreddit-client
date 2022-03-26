@@ -15,7 +15,7 @@ export const postsFieldPolicy: FieldPolicy<
   PostsReadResult
 > = {
   keyArgs: ["orderType", "userId"],
-  merge(existing, incoming, { args, readField }) {
+  merge(existing, incoming, { readField }) {
     // debugger;
     const merged = existing ? { ...existing.posts } : {};
     incoming.posts.forEach((item) => {

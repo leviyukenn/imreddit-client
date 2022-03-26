@@ -11,13 +11,18 @@
     "moduleResolution": "node",
     "noEmit": true,
     "noFallthroughCasesInSwitch": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
     "target": "esnext"
   },
   "exclude": ["node_modules"],
-  "include": ["**/*.ts", "**/*.tsx", "src/images/icons/custom.d.ts", "src/pages/r/[communityName]"]
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "src/images/icons/custom.d.ts",
+    "src/pages/r/[communityName]"
+  ]
 }
