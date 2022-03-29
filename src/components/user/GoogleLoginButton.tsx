@@ -89,6 +89,7 @@ function useGoogleAuthentication(
 
   const onLogin = useCallback(
     async (response: GoogleLoginResponse | GoogleLoginResponseOffline) => {
+      debugger;
       setIsSubmitting(true);
 
       const loginResponse = await login({
@@ -147,7 +148,7 @@ function GoogleButton({ isSubmitting, setIsSubmitting }: GoogleButtonProps) {
           })
         }
         disabled={isSubmitting}
-        uxMode="redirect"
+        // uxMode="redirect"
         render={({ onClick }: { onClick: () => void }) => (
           <Button
             variant="outlined"
