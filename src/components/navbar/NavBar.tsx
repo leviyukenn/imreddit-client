@@ -1,10 +1,8 @@
-import { Box } from "@material-ui/core";
+import { Box, Link } from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
-import IconButton from "@material-ui/core/IconButton";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import MenuIcon from "@material-ui/icons/Menu";
 import NextLink from "next/link";
 import React from "react";
 import { useMeQuery } from "../../generated/graphql";
@@ -42,6 +40,18 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       alignItems: "center",
     },
+    iconContainer: {
+      display: "flex",
+      height: 56,
+      alignItems: "center",
+    },
+    icon: {
+      height: 48,
+      marginRight: "0.5rem",
+    },
+    name: {
+      fontWeight: 700,
+    },
   })
 );
 
@@ -54,22 +64,21 @@ export default function NavBar() {
       <Toolbar className={classes.toolBar}>
         <Box className={classes.leftContainer}>
           <NextLink href="/" passHref>
-            <IconButton
-              edge="start"
-              className={classes.menuButton}
-              color="default"
-              aria-label="menu"
-            >
-              <MenuIcon />
-            </IconButton>
-          </NextLink>
-          <NextLink href="/">
-            <Typography variant="h6" color="textPrimary">
-              Imreddit
-            </Typography>
+            <Link underline="none">
+              <Box className={classes.iconContainer}>
+                <img src="/logo.png" className={classes.icon} />
+                <Typography
+                  variant="h6"
+                  color="textPrimary"
+                  className={classes.name}
+                >
+                  Imreddit
+                </Typography>
+              </Box>
+            </Link>
           </NextLink>
           {meResponse?.me ? (
-            <Box marginLeft="1em">
+            <Box marginLeft="2em">
               <CommunitySelection me={meResponse.me} />
             </Box>
           ) : null}
