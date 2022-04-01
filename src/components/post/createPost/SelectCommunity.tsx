@@ -125,18 +125,19 @@ function useCommunitySelectionOption(userId: string) {
         group: CommunitySelectionOptionGroupType.MY_COMMUNITIES,
       })
     );
-    const createCommunity = CommunitySelectionOption.createOption({
-      id: "createCommunity",
-      name: "Create Community",
-      icon: CommunitySelectionOptionIconType.CREATE_COMMUNITY,
-      link: createCommunityPageLink,
-      group: CommunitySelectionOptionGroupType.MY_COMMUNITIES,
-    });
 
-    return [createCommunity, ...myCommunities];
+    return myCommunities;
   }, [communities]);
 
-  return [...myCommunitiesItems];
+  const createCommunity = CommunitySelectionOption.createOption({
+    id: "createCommunity",
+    name: "Create Community",
+    icon: CommunitySelectionOptionIconType.CREATE_COMMUNITY,
+    link: createCommunityPageLink,
+    group: CommunitySelectionOptionGroupType.MY_COMMUNITIES,
+  });
+
+  return [createCommunity, ...myCommunitiesItems];
 }
 
 export default function SelectCommunity({

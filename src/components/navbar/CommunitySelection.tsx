@@ -8,14 +8,28 @@ import AddIcon from "@material-ui/icons/Add";
 import ExpandMoreRoundedIcon from "@material-ui/icons/ExpandMoreRounded";
 import HomeIcon from "@material-ui/icons/Home";
 import SearchIcon from "@material-ui/icons/Search";
-import Autocomplete, { AutocompleteCloseReason } from "@material-ui/lab/Autocomplete";
+import Autocomplete, {
+  AutocompleteCloseReason,
+} from "@material-ui/lab/Autocomplete";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import React, { useMemo, useState } from "react";
-import { RegularUserFragment, useUserRolesQuery } from "../../generated/graphql";
+import {
+  RegularUserFragment,
+  useUserRolesQuery,
+} from "../../generated/graphql";
 import theme from "../../theme";
-import { CommunitySelectionOption, CommunitySelectionOptionGroupType, CommunitySelectionOptionIconType } from "../../utils/factory/communitySelectionOption";
-import { createCommunityHomeLink, createCommunityPageLink, createUserProfileLink, homeLink } from "../../utils/links";
+import {
+  CommunitySelectionOption,
+  CommunitySelectionOptionGroupType,
+  CommunitySelectionOptionIconType,
+} from "../../utils/factory/communitySelectionOption";
+import {
+  createCommunityHomeLink,
+  createCommunityPageLink,
+  createUserProfileLink,
+  homeLink,
+} from "../../utils/links";
 import CommunityIcon from "../community/CommunityIcon";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -169,29 +183,8 @@ function useCommunitySelectionOption(me: RegularUserFragment) {
         group: CommunitySelectionOptionGroupType.MY_COMMUNITIES,
       })
     );
-    const createCommunityItem = CommunitySelectionOption.createOption({
-      id: "createCommunity",
-      name: "Create Community",
-      icon: CommunitySelectionOptionIconType.CREATE_COMMUNITY,
-      link: createCommunityPageLink,
-      group: CommunitySelectionOptionGroupType.MY_COMMUNITIES,
-    });
-    const HomeItem = CommunitySelectionOption.createOption({
-      id: "home",
-      name: "Home",
-      icon: CommunitySelectionOptionIconType.HOME,
-      link: homeLink,
-      group: CommunitySelectionOptionGroupType.MY_COMMUNITIES,
-    });
-    const MyPageItem = CommunitySelectionOption.createOption({
-      id: me.id,
-      name: "u/" + me.username,
-      icon: me.avatar,
-      link: createUserProfileLink(me.username, "posts"),
-      group: CommunitySelectionOptionGroupType.MY_COMMUNITIES,
-    });
 
-    return [createCommunityItem, HomeItem, MyPageItem, ...myCommunityOptions];
+    return myCommunityOptions;
   }, [myCommunities, me]);
 
   const moderatingCommunities = useMemo(
@@ -216,7 +209,35 @@ function useCommunitySelectionOption(me: RegularUserFragment) {
     [moderatingCommunities]
   );
 
-  return [...moderatingItems, ...myCommunitiesItems];
+  const createCommunityItem = CommunitySelectionOption.createOption({
+    id: "createCommunity",
+    name: "Create Community",
+    icon: CommunitySelectionOptionIconType.CREATE_COMMUNITY,
+    link: createCommunityPageLink,
+    group: CommunitySelectionOptionGroupType.MY_COMMUNITIES,
+  });
+  const HomeItem = CommunitySelectionOption.createOption({
+    id: "home",
+    name: "Home",
+    icon: CommunitySelectionOptionIconType.HOME,
+    link: homeLink,
+    group: CommunitySelectionOptionGroupType.MY_COMMUNITIES,
+  });
+  const MyPageItem = CommunitySelectionOption.createOption({
+    id: me.id,
+    name: "u/" + me.username,
+    icon: me.avatar,
+    link: createUserProfileLink(me.username, "posts"),
+    group: CommunitySelectionOptionGroupType.MY_COMMUNITIES,
+  });
+
+  return [
+    createCommunityItem,
+    HomeItem,
+    MyPageItem,
+    ...moderatingItems,
+    ...myCommunitiesItems,
+  ];
 }
 
 export default function CommunitySelection({
@@ -294,8 +315,9 @@ export default function CommunitySelection({
             {!selectedOption && router.query.keyword ? (
               <>
                 <SearchIcon />
-                {matches?
-                <Box className={classes.placeholder}>Search Results</Box>:null}
+                {matches ? (
+                  <Box className={classes.placeholder}>Search Results</Box>
+                ) : null}
               </>
             ) : selectedOption ? (
               <>
