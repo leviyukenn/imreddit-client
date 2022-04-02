@@ -84,6 +84,9 @@ export const editCommunityDescriptionValidationSchema = Yup.object({
 export const editUserAboutValidationSchema = Yup.object({
   about: userAboutValidation,
 });
+export const editUserNameValidationSchema = Yup.object({
+  username: usernameValidation,
+});
 
 export const createPostValidationSchema = Yup.object({
   title: postTitleValidation,

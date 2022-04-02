@@ -1,0 +1,10 @@
+mutation EditUserName($username: String!) {
+  editUserName(username: $username) {
+    user {
+      ...RegularUser
+    }
+    errors {
+      ...RegularErrors
+    }
+  }
+}

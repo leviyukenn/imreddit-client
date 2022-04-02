@@ -14,6 +14,7 @@ import { RegularUserFragment } from "../../../generated/graphql";
 import { createPostLink } from "../../../utils/links";
 import GenerateAvatarModal from "./GenerateAvatarModal";
 import UserAboutEditor from "./UserAboutEditor";
+import UserNameEditor from "./UserNameEditor";
 
 interface UserProfileProps {
   user: RegularUserFragment;
@@ -34,7 +35,7 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: "0 1rem 1rem",
     },
     userName: {
-      textAlign: "center",
+      // textAlign: "center",
       fontWeight: 500,
       color: "#222222",
     },
@@ -91,6 +92,17 @@ const useStyles = makeStyles((theme: Theme) =>
         padding: "0.5em",
       },
     },
+    userNameContainer: {
+      display: "flex",
+      justifyContent: "center",
+      cursor: "pointer",
+      transition: "all .1s linear 0s",
+      "&:hover": {
+        border: "1px solid #0079d3",
+        borderRadius: "4px",
+        padding: "0.5em",
+      },
+    },
   })
 );
 
@@ -102,6 +114,7 @@ const MyProfile = ({ user }: UserProfileProps) => {
     router.push(createPostLink);
   }, [router]);
   const [showUserAboutEditor, setShowUserAboutEditor] = useState(false);
+  const [showUserNameEditor, setShowUserNameEditor] = useState(false);
 
   return (
     <>
@@ -111,9 +124,26 @@ const MyProfile = ({ user }: UserProfileProps) => {
           <img src={user.avatar} className={classes.avatar} />
         </Box>
         <Box className={classes.content}>
-          <Typography variant="h5" className={classes.userName}>
-            {user.username}
-          </Typography>
+          <Box>
+            {showUserNameEditor ? (
+              <UserNameEditor
+                {...{
+                  username: user.username,
+                  closeUserNameEditor: () => setShowUserNameEditor(false),
+                }}
+              />
+            ) : (
+              <Box
+                className={classes.userNameContainer}
+                onClick={() => setShowUserNameEditor(true)}
+              >
+                <Typography variant="h5" className={classes.userName}>
+                  {user.username}
+                </Typography>
+                <EditIcon />
+              </Box>
+            )}
+          </Box>
           <Typography variant="subtitle1" className={classes.subUserName}>
             {"u/" + user.username}
           </Typography>
