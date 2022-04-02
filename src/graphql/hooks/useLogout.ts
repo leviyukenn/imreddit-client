@@ -1,5 +1,5 @@
 import { useGoogleLogout } from "react-google-login";
-import { GOOGLE_AUTH_CLIENT_ID } from "../../const/const";
+import { GOOGLE_AUTH_CLIENT_ID } from "../../const/envVariables";
 import { useLogoutMutation } from "../../generated/graphql";
 import { useSnackbarAlert } from "../../redux/hooks/useSnackbarAlert";
 import { AlertSeverity } from "../../redux/types/types";

@@ -1,5 +1,5 @@
 import { createStyles, makeStyles, Theme } from "@material-ui/core";
-import { SERVER_URL } from "../../const/const";
+import { SERVER_URL } from "../../const/envVariables";
 import DefaultCommunityIcon from "../utility/DefaultCommunityIcon";
 
 interface CommunityIconProps {

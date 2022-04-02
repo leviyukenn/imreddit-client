@@ -14,7 +14,7 @@ import NextLink from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import Highlighter from "react-highlight-words";
-import { SERVER_URL } from "../../../const/const";
+import { SERVER_URL } from "../../../const/envVariables";
 import { RegularPostDetailFragment } from "../../../generated/graphql";
 import { createPostDetailModalLink } from "../../../utils/links";
 import PostInfo from "../PostInfo";

@@ -14,7 +14,7 @@ import { Skeleton } from "@material-ui/lab";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
-import { SERVER_URL } from "../../../const/const";
+import { SERVER_URL } from "../../../const/envVariables";
 import { RegularPostDetailFragment } from "../../../generated/graphql";
 import { PostStatus } from "../../../graphql/hooks/useChangePostStatus";
 import { createPostDetailModalLink } from "../../../utils/links";

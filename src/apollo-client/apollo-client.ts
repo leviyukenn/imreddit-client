@@ -1,6 +1,6 @@
 import { ApolloClient, ApolloLink, InMemoryCache } from "@apollo/client";
 import { createUploadLink } from "apollo-upload-client";
-import { GRAPHQL_SERVER_URL } from "../const/const";
+import { GRAPHQL_SERVER_URL } from "../const/envVariables";
 import { communityPostsFieldPolicy } from "./communityPostsFieldPolicy";
 import { postsFieldPolicy } from "./postsFieldPolicy";
 import { searchPostsFieldPolicy } from "./searchPostsFieldPolicy";

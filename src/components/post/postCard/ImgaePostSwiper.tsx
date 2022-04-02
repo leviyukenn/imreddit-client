@@ -11,7 +11,7 @@ import ArrowBackIosOutlinedIcon from "@material-ui/icons/ArrowBackIosOutlined";
 import ArrowForwardIosOutlinedIcon from "@material-ui/icons/ArrowForwardIosOutlined";
 import NextLink from "next/link";
 import React, { useCallback, useState } from "react";
-import { SERVER_URL } from "../../../const/const";
+import { SERVER_URL } from "../../../const/envVariables";
 import { RegularImageFragment } from "../../../generated/graphql";
 
 interface ImgaePostSwiperProps {

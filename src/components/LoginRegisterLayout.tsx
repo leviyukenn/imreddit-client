@@ -6,7 +6,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import React, { ReactNode } from "react";
-import { SERVER_URL } from "../const/const";
+import { createCommunityImgPath } from "../const/const";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -19,11 +19,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     sideImage: {
       marginRight: "1.5rem",
-      backgroundImage: `url(${
-        SERVER_URL + "/resources/backgroundImages/createCommunityImg.jpeg"
-      })`,
-      width: "140px",
-      backgroundPosition: "60%",
+      backgroundImage: `url(${createCommunityImgPath})`,
+      width: "240px",
+      backgroundPosition: "20% 25%",
     },
     container: {
       display: "flex",

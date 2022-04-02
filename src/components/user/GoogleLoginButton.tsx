@@ -11,7 +11,7 @@ import GoogleLogin, {
   GoogleLoginResponse,
   GoogleLoginResponseOffline,
 } from "react-google-login";
-import { GOOGLE_AUTH_CLIENT_ID } from "../../const/const";
+import { GOOGLE_AUTH_CLIENT_ID } from "../../const/envVariables";
 import { FrontendError } from "../../const/errors";
 import {
   RegularUserFragmentDoc,

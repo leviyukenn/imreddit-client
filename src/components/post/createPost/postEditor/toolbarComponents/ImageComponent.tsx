@@ -11,7 +11,7 @@ import {
 import ImageIcon from "@material-ui/icons/Image";
 import { DropzoneArea } from "material-ui-dropzone";
 import React, { useMemo, useRef } from "react";
-import { SERVER_URL } from "../../../../../const/const";
+import { SERVER_URL } from "../../../../../const/envVariables";
 import { useUploadImage } from "../../../../../graphql/hooks/useUploadImage";
 
 interface ImageComponentProps {

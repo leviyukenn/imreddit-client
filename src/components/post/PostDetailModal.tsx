@@ -18,7 +18,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { SERVER_URL } from "../../const/const";
+import { SERVER_URL } from "../../const/envVariables";
 import { useCommunity } from "../../graphql/hooks/useCommunity";
 import { usePostDetail } from "../../graphql/hooks/usePostDetail";
 import { usePostInfoRoute } from "../../utils/hooks/usePostInfoRoute";

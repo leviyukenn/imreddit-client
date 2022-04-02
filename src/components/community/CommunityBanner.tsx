@@ -1,7 +1,7 @@
 import { Box, createStyles, makeStyles, Theme } from "@material-ui/core";
 import React, { useMemo } from "react";
 import { useInView } from "react-intersection-observer";
-import { SERVER_URL } from "../../const/const";
+import { SERVER_URL } from "../../const/envVariables";
 import { RegularCommunityFragment } from "../../generated/graphql";
 import { useCommunityAppearance } from "../../redux/hooks/useCommunityAppearance";
 import CommunityHeader from "./CommunityHeader";

@@ -1,6 +1,6 @@
 import { Box } from "@material-ui/core";
 import React, { useCallback, useMemo } from "react";
-import { FRONTEND_URL } from "../../../const/const";
+import { FRONTEND_URL } from "../../../const/envVariables";
 import { RegularPostDetailFragment } from "../../../generated/graphql";
 import {
   PostStatus,

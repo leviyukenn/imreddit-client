@@ -6,7 +6,7 @@ import {
   Theme,
 } from "@material-ui/core";
 import React, { useMemo } from "react";
-import { SERVER_URL } from "../../const/const";
+import { SERVER_URL } from "../../const/envVariables";
 import { useCommunityAppearance } from "../../redux/hooks/useCommunityAppearance";
 import NavBar from "../navbar/NavBar";
 
