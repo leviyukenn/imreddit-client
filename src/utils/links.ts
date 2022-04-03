@@ -9,7 +9,8 @@ export const createPostDetailPageLink = (
 export const createPostDetailModalLink = (
   currentPath: string,
   postId: string
-) => `${currentPath}?modalPostId=${postId}`;
+) =>
+  `${currentPath}${currentPath.includes("?") ? "&" : "?"}modalPostId=${postId}`;
 
 export const createPostDetailModalLinkWithCommentId = (
   currentPath: string,
