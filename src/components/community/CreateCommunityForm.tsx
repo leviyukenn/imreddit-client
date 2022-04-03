@@ -1,5 +1,6 @@
 import {
   Button,
+  CircularProgress,
   createStyles,
   Divider,
   Grid,
@@ -8,20 +9,12 @@ import {
   Theme,
   Typography,
 } from "@material-ui/core";
-import { Field, Form, Formik, FormikHelpers } from "formik";
-import { useRouter } from "next/router";
-import React, { useCallback, useMemo } from "react";
-import { FrontendError } from "../../const/errors";
+import { blue } from "@material-ui/core/colors";
+import { Field, Form, Formik } from "formik";
+import React from "react";
 import { createCommunityValidationSchema } from "../../fieldValidateSchema/fieldValidateSchema";
-import {
-  useCreateCommunityMutation,
-  useTopicsQuery,
-} from "../../generated/graphql";
-import { useSnackbarAlert } from "../../redux/hooks/useSnackbarAlert";
-import { AlertSeverity } from "../../redux/types/types";
-import { useIsAuth } from "../../utils/hooks/useIsAuth";
-import { createCommunityHomeLink } from "../../utils/links";
-import { toErrorMap } from "../../utils/toErrorMap";
+import { useCreateCommunity } from "../../graphql/hooks/useCreateCommunity";
+import { useTopics } from "../../graphql/hooks/useTopics";
 import { SelectField, TextAreaField, TextInputField } from "../InputField";
 
 interface FormData {
@@ -49,61 +42,75 @@ const useStyles = makeStyles((theme: Theme) =>
         fontSize: "0.875rem",
       },
     },
+    submitButtonWrap: {
+      position: "relative",
+    },
+    buttonProgress: {
+      color: blue[500],
+      // position: "absolute",
+      // top: "50%",
+      // left: "50%",
+      // marginTop: -12,
+      // marginLeft: -6,
+    },
   })
 );
 
-const useCreateCommunity = () => {
-  const [createCommunity] = useCreateCommunityMutation();
-  const router = useRouter();
-  const { onOpenSnackbarAlert } = useSnackbarAlert();
-  const { me, redirectToLoginIfNotLoggedIn } = useIsAuth();
+// const useCreateCommunity = () => {
+//   const [createCommunity] = useCreateCommunityMutation();
+//   const router = useRouter();
+//   const { onOpenSnackbarAlert } = useSnackbarAlert();
+//   const { me, redirectToLoginIfNotLoggedIn } = useIsAuth();
 
-  const onCreateCommunity = useCallback(
-    async (values: FormData, actions: FormikHelpers<FormData>) => {
-      if (!me) redirectToLoginIfNotLoggedIn();
-      const response = await createCommunity({ variables: values }).catch(
-        (err) => {
-          onOpenSnackbarAlert({
-            message: err.message || FrontendError.ERR0002,
-            severity: AlertSeverity.ERROR,
-          });
+//   const onCreateCommunity = useCallback(
+//     async (values: FormData, actions: FormikHelpers<FormData>) => {
+//       if (!me) redirectToLoginIfNotLoggedIn();
+//       const response = await createCommunity({ variables: values }).catch(
+//         (err) => {
+//           onOpenSnackbarAlert({
+//             message: err.message || FrontendError.ERR0002,
+//             severity: AlertSeverity.ERROR,
+//           });
 
-          return null;
-        }
-      );
-      const createCommunityResult = response?.data?.createCommunity;
+//           return null;
+//         }
+//       );
+//       const createCommunityResult = response?.data?.createCommunity;
 
-      if (!createCommunityResult) {
-        return;
-      }
+//       if (!createCommunityResult) {
+//         return;
+//       }
 
-      if (createCommunityResult.errors) {
-        actions.setErrors(toErrorMap(createCommunityResult.errors));
-        return;
-      }
-      if (createCommunityResult.community) {
-        router.push(
-          createCommunityHomeLink(createCommunityResult.community.name)
-        );
-      }
-    },
-    [me, redirectToLoginIfNotLoggedIn, createCommunity, onOpenSnackbarAlert]
-  );
+//       if (createCommunityResult.errors) {
+//         actions.setErrors(toErrorMap(createCommunityResult.errors));
+//         return;
+//       }
+//       if (createCommunityResult.community) {
+//         router.push(
+//           createCommunityHomeLink(createCommunityResult.community.name)
+//         );
+//       }
+//     },
+//     [me, redirectToLoginIfNotLoggedIn, createCommunity, onOpenSnackbarAlert]
+//   );
 
-  const { data: topicsResponse } = useTopicsQuery({
-    skip: typeof window === "undefined",
-  });
+//   const { data: topicsResponse } = useTopicsQuery({
+//     skip: typeof window === "undefined",
+//   });
 
-  const topics = useMemo(() => topicsResponse?.topics || [], [topicsResponse]);
+//   const topics = useMemo(() => topicsResponse?.topics || [], [topicsResponse]);
 
-  return {
-    onCreateCommunity,
-    topics,
-  };
-};
+//   return {
+//     onCreateCommunity,
+//     topics,
+//   };
+// };
 
 const CreateCommunityForm = () => {
-  const { onCreateCommunity, topics } = useCreateCommunity();
+  // const { onCreateCommunity, topics } = useCreateCommunity();
+
+  const { onCreateCommunity, loading } = useCreateCommunity();
+  const { topics } = useTopics();
 
   const classes = useStyles();
   return (
@@ -181,8 +188,16 @@ const CreateCommunityForm = () => {
                 <Button
                   variant="contained"
                   color="primary"
-                  disabled={isSubmitting}
+                  disabled={loading}
                   onClick={submitForm}
+                  startIcon={
+                    loading && (
+                      <CircularProgress
+                        size={24}
+                        className={classes.buttonProgress}
+                      />
+                    )
+                  }
                 >
                   Create Community
                 </Button>
