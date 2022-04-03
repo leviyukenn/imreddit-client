@@ -24,6 +24,7 @@ import {
   CommunitySelectionOptionGroupType,
   CommunitySelectionOptionIconType,
 } from "../../utils/factory/communitySelectionOption";
+import { usePostInfoRoute } from "../../utils/hooks/usePostInfoRoute";
 import {
   createCommunityHomeLink,
   createCommunityPageLink,
@@ -252,17 +253,20 @@ export default function CommunitySelection({
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [isButtonClicked, setIsButtonClicked] = useState(false);
+  const { communityName } = usePostInfoRoute();
 
   const selectedOption = useMemo(
     () =>
       communitySelectionOptions.find(
         (option) =>
           option.link === router.asPath ||
+          (communityName && option.link.includes(communityName)) ||
           option.link ===
             createUserProfileLink(router.query.userName as string, "posts")
       ),
     [router, communitySelectionOptions, me]
   );
+
   const inputIcon = useMemo(() => {
     if (!selectedOption) return null;
     if (typeof selectedOption.icon === "string") {
