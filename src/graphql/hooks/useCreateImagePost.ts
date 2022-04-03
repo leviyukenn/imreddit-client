@@ -51,27 +51,8 @@ export function useCreateImagePost() {
     async (variables: CreateImagePostMutationVariables) => {
       redirectToLoginIfNotLoggedIn();
       const response = await createImagePostMutation({ variables });
-      if (!response) {
-        return false;
-      }
 
-      if (response.errors?.length) {
-        onOpenSnackbarAlert({
-          message: response.errors[0].message,
-          severity: AlertSeverity.ERROR,
-        });
-        return false;
-      }
-
-      const createPostResult = response.data?.createImagePost;
-      if (createPostResult?.errors?.length) {
-        onOpenSnackbarAlert({
-          message: createPostResult.errors[0].message,
-          severity: AlertSeverity.ERROR,
-        });
-        return false;
-      }
-
+      const createPostResult = response?.data?.createImagePost;
       if (createPostResult?.post) {
         router.push(
           createPostDetailPageLink(
@@ -81,6 +62,14 @@ export function useCreateImagePost() {
         );
         return true;
       }
+
+      if (createPostResult?.errors?.length) {
+        onOpenSnackbarAlert({
+          message: createPostResult.errors[0].message,
+          severity: AlertSeverity.ERROR,
+        });
+      }
+
       return false;
     },
     [router, onOpenSnackbarAlert, createImagePostMutation]

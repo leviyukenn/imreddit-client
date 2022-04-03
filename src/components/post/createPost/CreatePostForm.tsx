@@ -1,8 +1,8 @@
 import {
   Button,
+  CircularProgress,
   createStyles,
   Grid,
-  LinearProgress,
   makeStyles,
   Theme,
 } from "@material-ui/core";
@@ -16,6 +16,7 @@ import { TextInputField } from "../../InputField";
 import { PostType, UploadedImage } from "../../types/types";
 import ImagePostEditor from "./postEditor/ImagePostEditor";
 import PostEditor from "./postEditor/PostEditor";
+import { blue } from "@material-ui/core/colors";
 
 interface FormData {
   title: string;
@@ -34,6 +35,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     formItem: {
       width: "100%",
+    },
+    buttonProgress: {
+      color: blue[500],
     },
   })
 );
@@ -81,6 +85,7 @@ const CreatePost = ({ postType, communityId }: CreatePostFormProps) => {
       }
       if (success) {
         actions.resetForm();
+        return;
       }
       setIsSubmitting(false);
     },
@@ -123,7 +128,6 @@ const CreatePost = ({ postType, communityId }: CreatePostFormProps) => {
                 <ImagePostEditor {...{ uploadedImages, setUploadedImages }} />
               ) : null}
             </Grid>
-            {isSubmitting && <LinearProgress />}
             <br />
             <Grid item className={classes.formItem}>
               <Button
@@ -131,6 +135,14 @@ const CreatePost = ({ postType, communityId }: CreatePostFormProps) => {
                 color="primary"
                 disabled={isSubmitting || !communityId}
                 onClick={submitForm}
+                startIcon={
+                  isSubmitting && (
+                    <CircularProgress
+                      size={24}
+                      className={classes.buttonProgress}
+                    />
+                  )
+                }
               >
                 Post
               </Button>

@@ -50,27 +50,7 @@ export function useCreateTextPost() {
     async (variables: CreateTextPostMutationVariables) => {
       redirectToLoginIfNotLoggedIn();
       const response = await createTextPostMutation({ variables });
-      if (!response) {
-        return false;
-      }
-
-      if (response.errors?.length) {
-        onOpenSnackbarAlert({
-          message: response.errors[0].message,
-          severity: AlertSeverity.ERROR,
-        });
-        return false;
-      }
-
-      const createPostResult = response.data?.createTextPost;
-      if (createPostResult?.errors?.length) {
-        onOpenSnackbarAlert({
-          message: createPostResult.errors[0].message,
-          severity: AlertSeverity.ERROR,
-        });
-        return false;
-      }
-
+      const createPostResult = response?.data?.createTextPost;
       if (createPostResult?.post) {
         router.push(
           createPostDetailPageLink(
@@ -80,6 +60,14 @@ export function useCreateTextPost() {
         );
         return true;
       }
+
+      if (createPostResult?.errors?.length) {
+        onOpenSnackbarAlert({
+          message: createPostResult.errors[0].message,
+          severity: AlertSeverity.ERROR,
+        });
+      }
+
       return false;
     },
     [router, onOpenSnackbarAlert, createTextPostMutation]

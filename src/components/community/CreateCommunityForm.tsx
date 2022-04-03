@@ -1,14 +1,4 @@
-import {
-  Button,
-  CircularProgress,
-  createStyles,
-  Divider,
-  Grid,
-  LinearProgress,
-  makeStyles,
-  Theme,
-  Typography,
-} from "@material-ui/core";
+import { Button, CircularProgress, createStyles, Divider, Grid, LinearProgress, makeStyles, Theme, Typography } from "@material-ui/core";
 import { blue } from "@material-ui/core/colors";
 import { Field, Form, Formik } from "formik";
 import React from "react";
@@ -47,67 +37,12 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     buttonProgress: {
       color: blue[500],
-      // position: "absolute",
-      // top: "50%",
-      // left: "50%",
-      // marginTop: -12,
-      // marginLeft: -6,
     },
   })
 );
 
-// const useCreateCommunity = () => {
-//   const [createCommunity] = useCreateCommunityMutation();
-//   const router = useRouter();
-//   const { onOpenSnackbarAlert } = useSnackbarAlert();
-//   const { me, redirectToLoginIfNotLoggedIn } = useIsAuth();
-
-//   const onCreateCommunity = useCallback(
-//     async (values: FormData, actions: FormikHelpers<FormData>) => {
-//       if (!me) redirectToLoginIfNotLoggedIn();
-//       const response = await createCommunity({ variables: values }).catch(
-//         (err) => {
-//           onOpenSnackbarAlert({
-//             message: err.message || FrontendError.ERR0002,
-//             severity: AlertSeverity.ERROR,
-//           });
-
-//           return null;
-//         }
-//       );
-//       const createCommunityResult = response?.data?.createCommunity;
-
-//       if (!createCommunityResult) {
-//         return;
-//       }
-
-//       if (createCommunityResult.errors) {
-//         actions.setErrors(toErrorMap(createCommunityResult.errors));
-//         return;
-//       }
-//       if (createCommunityResult.community) {
-//         router.push(
-//           createCommunityHomeLink(createCommunityResult.community.name)
-//         );
-//       }
-//     },
-//     [me, redirectToLoginIfNotLoggedIn, createCommunity, onOpenSnackbarAlert]
-//   );
-
-//   const { data: topicsResponse } = useTopicsQuery({
-//     skip: typeof window === "undefined",
-//   });
-
-//   const topics = useMemo(() => topicsResponse?.topics || [], [topicsResponse]);
-
-//   return {
-//     onCreateCommunity,
-//     topics,
-//   };
-// };
 
 const CreateCommunityForm = () => {
-  // const { onCreateCommunity, topics } = useCreateCommunity();
 
   const { onCreateCommunity, loading } = useCreateCommunity();
   const { topics } = useTopics();
