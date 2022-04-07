@@ -1,8 +1,5 @@
-
-query GetMyUpvote($postId:String!){
-    getUpvote(postId:$postId){
-        userId
-        postId
-        value
-    }
+query GetMyUpvote($postId: String!, $userId: String!) {
+  getUpvote(postId: $postId, userId: $userId) {
+    ...RegularUpvote
+  }
 }

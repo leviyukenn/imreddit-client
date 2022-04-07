@@ -1,0 +1,5 @@
+fragment RegularUpvote on Upvote {
+  userId
+  postId
+  value
+}

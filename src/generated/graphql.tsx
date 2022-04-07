@@ -131,7 +131,7 @@ export type Mutation = {
   setCommunityAppearance: CommunityResponse;
   joinCommunity: RoleResponse;
   leaveCommunity: RoleResponse;
-  vote: Scalars['Int'];
+  vote: UpvoteResponse;
   createTopic: Topic;
 };
 
@@ -392,6 +392,7 @@ export type QueryUserRoleArgs = {
 
 
 export type QueryGetUpvoteArgs = {
+  userId: Scalars['String'];
   postId: Scalars['String'];
 };
 
@@ -438,6 +439,12 @@ export type Upvote = {
   userId: Scalars['String'];
   postId: Scalars['String'];
   value: Scalars['Int'];
+};
+
+export type UpvoteResponse = {
+  __typename?: 'UpvoteResponse';
+  upvote: Upvote;
+  points: Scalars['Int'];
 };
 
 export type User = {
@@ -520,6 +527,11 @@ export type RegularTextPostFragment = (
     { __typename?: 'Community' }
     & Pick<Community, 'name'>
   ) }
+);
+
+export type RegularUpvoteFragment = (
+  { __typename?: 'Upvote' }
+  & Pick<Upvote, 'userId' | 'postId' | 'value'>
 );
 
 export type RegularUserFragment = (
@@ -919,7 +931,14 @@ export type VoteMutationVariables = Exact<{
 
 export type VoteMutation = (
   { __typename?: 'Mutation' }
-  & Pick<Mutation, 'vote'>
+  & { vote: (
+    { __typename?: 'UpvoteResponse' }
+    & Pick<UpvoteResponse, 'points'>
+    & { upvote: (
+      { __typename?: 'Upvote' }
+      & RegularUpvoteFragment
+    ) }
+  ) }
 );
 
 export type AllPostsQueryVariables = Exact<{ [key: string]: never; }>;
@@ -985,6 +1004,7 @@ export type CommunityPostsQuery = (
 
 export type GetMyUpvoteQueryVariables = Exact<{
   postId: Scalars['String'];
+  userId: Scalars['String'];
 }>;
 
 
@@ -992,7 +1012,7 @@ export type GetMyUpvoteQuery = (
   { __typename?: 'Query' }
   & { getUpvote?: Maybe<(
     { __typename?: 'Upvote' }
-    & Pick<Upvote, 'userId' | 'postId' | 'value'>
+    & RegularUpvoteFragment
   )> }
 );
 
@@ -1299,6 +1319,13 @@ export const RegularTextPostFragmentDoc = gql`
   }
 }
     ${RegularUserFragmentDoc}`;
+export const RegularUpvoteFragmentDoc = gql`
+    fragment RegularUpvote on Upvote {
+  userId
+  postId
+  value
+}
+    `;
 export const RegularErrorsFragmentDoc = gql`
     fragment RegularErrors on FieldError {
   field
@@ -2105,9 +2132,14 @@ export type UploadImageMutationResult = Apollo.MutationResult<UploadImageMutatio
 export type UploadImageMutationOptions = Apollo.BaseMutationOptions<UploadImageMutation, UploadImageMutationVariables>;
 export const VoteDocument = gql`
     mutation Vote($postId: String!, $value: Int!) {
-  vote(voteInput: {postId: $postId, value: $value})
+  vote(voteInput: {postId: $postId, value: $value}) {
+    upvote {
+      ...RegularUpvote
+    }
+    points
+  }
 }
-    `;
+    ${RegularUpvoteFragmentDoc}`;
 export type VoteMutationFn = Apollo.MutationFunction<VoteMutation, VoteMutationVariables>;
 
 /**
@@ -2291,14 +2323,12 @@ export type CommunityPostsQueryHookResult = ReturnType<typeof useCommunityPostsQ
 export type CommunityPostsLazyQueryHookResult = ReturnType<typeof useCommunityPostsLazyQuery>;
 export type CommunityPostsQueryResult = Apollo.QueryResult<CommunityPostsQuery, CommunityPostsQueryVariables>;
 export const GetMyUpvoteDocument = gql`
-    query GetMyUpvote($postId: String!) {
-  getUpvote(postId: $postId) {
-    userId
-    postId
-    value
+    query GetMyUpvote($postId: String!, $userId: String!) {
+  getUpvote(postId: $postId, userId: $userId) {
+    ...RegularUpvote
   }
 }
-    `;
+    ${RegularUpvoteFragmentDoc}`;
 
 /**
  * __useGetMyUpvoteQuery__
@@ -2313,6 +2343,7 @@ export const GetMyUpvoteDocument = gql`
  * const { data, loading, error } = useGetMyUpvoteQuery({
  *   variables: {
  *      postId: // value for 'postId'
+ *      userId: // value for 'userId'
  *   },
  * });
  */
@@ -2986,6 +3017,11 @@ export type UpvoteFieldPolicy = {
 	postId?: FieldPolicy<any> | FieldReadFunction<any>,
 	value?: FieldPolicy<any> | FieldReadFunction<any>
 };
+export type UpvoteResponseKeySpecifier = ('upvote' | 'points' | UpvoteResponseKeySpecifier)[];
+export type UpvoteResponseFieldPolicy = {
+	upvote?: FieldPolicy<any> | FieldReadFunction<any>,
+	points?: FieldPolicy<any> | FieldReadFunction<any>
+};
 export type UserKeySpecifier = ('id' | 'createdAt' | 'updatedAt' | 'username' | 'role' | 'email' | 'about' | 'points' | 'avatar' | UserKeySpecifier)[];
 export type UserFieldPolicy = {
 	id?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -3063,6 +3099,10 @@ export type TypedTypePolicies = TypePolicies & {
 	Upvote?: Omit<TypePolicy, "fields" | "keyFields"> & {
 		keyFields?: false | UpvoteKeySpecifier | (() => undefined | UpvoteKeySpecifier),
 		fields?: UpvoteFieldPolicy,
+	},
+	UpvoteResponse?: Omit<TypePolicy, "fields" | "keyFields"> & {
+		keyFields?: false | UpvoteResponseKeySpecifier | (() => undefined | UpvoteResponseKeySpecifier),
+		fields?: UpvoteResponseFieldPolicy,
 	},
 	User?: Omit<TypePolicy, "fields" | "keyFields"> & {
 		keyFields?: false | UserKeySpecifier | (() => undefined | UserKeySpecifier),

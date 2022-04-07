@@ -1,3 +1,8 @@
 mutation Vote($postId: String!, $value: Int!) {
-  vote(voteInput: { postId: $postId, value: $value })
+  vote(voteInput: { postId: $postId, value: $value }) {
+    upvote {
+      ...RegularUpvote
+    }
+    points
+  }
 }

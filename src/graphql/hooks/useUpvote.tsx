@@ -2,7 +2,6 @@ import { useCallback, useMemo } from "react";
 import { VoteStatus } from "../../components/types/types";
 import { useGetMyUpvoteQuery, useVoteMutation } from "../../generated/graphql";
 import { useSnackbarAlert } from "../../redux/hooks/useSnackbarAlert";
-import { AlertSeverity } from "../../redux/types/types";
 import { useIsAuth } from "../../utils/hooks/useIsAuth";
 
 enum VoteType {
@@ -12,7 +11,7 @@ enum VoteType {
 
 export function useVote(post: { __typename?: string; id: string }) {
   const { checkIsAuth, meLoading, me } = useIsAuth();
-  const { onOpenSnackbarAlert, handleMutationError } = useSnackbarAlert();
+  const { handleMutationError } = useSnackbarAlert();
   const [vote, { loading: voteLoading }] = useVoteMutation({
     onError: handleMutationError,
     update(cache, { data: voteResponse }) {
@@ -22,27 +21,15 @@ export function useVote(post: { __typename?: string; id: string }) {
         fields: {
           points(existing: number) {
             if (!voteResponse) return existing;
-            return existing + voteResponse.vote;
-          },
-        },
-      });
-      cache.modify({
-        id: cache.identify({
-          __typename: "Upvote",
-          userId: me?.id,
-          postId: post.id,
-        }),
-        fields: {
-          value(existing: number) {
-            return existing + voteResponse.vote;
+            return existing + voteResponse.vote.points;
           },
         },
       });
     },
   });
-  const { data: myUpvoteResponse } = useGetMyUpvoteQuery({
+  const { data: myUpvoteResponse, refetch } = useGetMyUpvoteQuery({
     skip: !me?.id,
-    variables: { postId: post.id },
+    variables: { postId: post.id, userId: me?.id! },
   });
 
   const voteStatus = useMemo(() => {
@@ -57,18 +44,17 @@ export function useVote(post: { __typename?: string; id: string }) {
       if (!checkIsAuth()) return false;
       const voteResponse = await vote({
         variables: { postId: post.id, value },
-      }).catch((err) => {
-        onOpenSnackbarAlert({
-          message: err.message,
-          severity: AlertSeverity.ERROR,
-        });
-        return null;
       });
 
-      if (voteResponse?.data) return true;
+      const savedUpvote = voteResponse?.data?.vote.upvote;
+
+      if (savedUpvote) {
+        refetch({ postId: savedUpvote.postId, userId: savedUpvote.userId });
+        return true;
+      }
       return false;
     },
-    [vote, checkIsAuth, post]
+    [vote, checkIsAuth, post, refetch]
   );
 
   const onUpvote = useCallback(() => {
