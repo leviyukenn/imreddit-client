@@ -85,11 +85,6 @@ export type FieldError = {
   message: Scalars['String'];
 };
 
-export type ForgotPasswordInput = {
-  username: Scalars['String'];
-  email: Scalars['String'];
-};
-
 export type Image = {
   __typename?: 'Image';
   id: Scalars['String'];
@@ -143,7 +138,7 @@ export type MutationChangePasswordArgs = {
 
 
 export type MutationForgotPasswordArgs = {
-  forgotPasswordInput: ForgotPasswordInput;
+  email: Scalars['String'];
 };
 
 
@@ -757,7 +752,6 @@ export type EditUserNameMutation = (
 );
 
 export type ForgotPasswordMutationVariables = Exact<{
-  username: Scalars['String'];
   email: Scalars['String'];
 }>;
 
@@ -1780,8 +1774,8 @@ export type EditUserNameMutationHookResult = ReturnType<typeof useEditUserNameMu
 export type EditUserNameMutationResult = Apollo.MutationResult<EditUserNameMutation>;
 export type EditUserNameMutationOptions = Apollo.BaseMutationOptions<EditUserNameMutation, EditUserNameMutationVariables>;
 export const ForgotPasswordDocument = gql`
-    mutation ForgotPassword($username: String!, $email: String!) {
-  forgotPassword(forgotPasswordInput: {username: $username, email: $email}) {
+    mutation ForgotPassword($email: String!) {
+  forgotPassword(email: $email) {
     errors {
       ...RegularErrors
     }
@@ -1804,7 +1798,6 @@ export type ForgotPasswordMutationFn = Apollo.MutationFunction<ForgotPasswordMut
  * @example
  * const [forgotPasswordMutation, { data, loading, error }] = useForgotPasswordMutation({
  *   variables: {
- *      username: // value for 'username'
  *      email: // value for 'email'
  *   },
  * });

@@ -63,7 +63,6 @@ export const loginValidationSchema = Yup.object({
 });
 
 export const forgotPasswordValidationSchema = Yup.object({
-  username: usernameValidation,
   email: emailValidation,
 });
 
