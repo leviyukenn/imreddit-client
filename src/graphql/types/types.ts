@@ -6,3 +6,9 @@ export enum OrderType {
   TOP_1YEAR,
   TOP_ALL_TIME,
 }
+
+export interface MutationResult<T> {
+  success: boolean;
+  errors?: Record<string, string>;
+  data?: T;
+}
