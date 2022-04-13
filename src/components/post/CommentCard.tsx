@@ -6,6 +6,7 @@ import {
   Link,
   makeStyles,
   Theme,
+  Tooltip,
   Typography,
 } from "@material-ui/core";
 import { blue } from "@material-ui/core/colors";
@@ -112,6 +113,11 @@ const useStyles = makeStyles((theme: Theme) =>
       textTransform: "none",
       color: "#878a8c",
     },
+    originalPoster: {
+      color: "rgb(0 121 211)",
+      fontWeight: 700,
+      marginLeft: 4,
+    },
   })
 );
 
@@ -123,6 +129,7 @@ export const CommentCard = ({ postId, ...props }: PostDetailProps) => {
   const commentRef = useRef<HTMLDivElement>(null);
 
   const { post, loading, timeago } = usePostDetail(postId);
+  const { post: parentPost } = usePostDetail(post?.ancestor?.id);
   const { me } = useIsAuth();
 
   const toggleShowThread = useCallback(() => {
@@ -155,6 +162,8 @@ export const CommentCard = ({ postId, ...props }: PostDetailProps) => {
 
   const isRemovedComment = post?.postStatus === PostStatus.REMOVED;
   const isCreator = me?.id && me.id === post?.creator.id;
+  const isOriginalPoster =
+    post?.creator.id && post.creator.id === parentPost?.creator.id;
 
   if (loading) return <LoadingCommentCard />;
 
@@ -218,6 +227,11 @@ export const CommentCard = ({ postId, ...props }: PostDetailProps) => {
               </Link>
             </NextLink>
           )}
+          {isOriginalPoster ? (
+            <Tooltip title="Original Poster">
+              <Box className={classes.originalPoster}>OP</Box>
+            </Tooltip>
+          ) : null}
           &nbsp;&#183;&nbsp;
           <Typography
             variant="caption"
