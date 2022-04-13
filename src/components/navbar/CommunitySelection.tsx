@@ -28,6 +28,7 @@ import { usePostInfoRoute } from "../../utils/hooks/usePostInfoRoute";
 import {
   createCommunityHomeLink,
   createCommunityPageLink,
+  createPostLink,
   createUserProfileLink,
   homeLink,
 } from "../../utils/links";
@@ -156,6 +157,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const iconMap = new Map<CommunitySelectionOptionIconType, JSX.Element>([
   [CommunitySelectionOptionIconType.HOME, <HomeIcon />],
   [CommunitySelectionOptionIconType.CREATE_COMMUNITY, <AddIcon />],
+  [CommunitySelectionOptionIconType.CREATE_POST, <AddIcon />],
 ]);
 
 function useCommunitySelectionOption(me: RegularUserFragment) {
@@ -210,29 +212,37 @@ function useCommunitySelectionOption(me: RegularUserFragment) {
     [moderatingCommunities]
   );
 
+  const createPostItem = CommunitySelectionOption.createOption({
+    id: "createPost",
+    name: "Create Post",
+    icon: CommunitySelectionOptionIconType.CREATE_POST,
+    link: createPostLink,
+    group: CommunitySelectionOptionGroupType.OTHERS,
+  });
   const createCommunityItem = CommunitySelectionOption.createOption({
     id: "createCommunity",
     name: "Create Community",
     icon: CommunitySelectionOptionIconType.CREATE_COMMUNITY,
     link: createCommunityPageLink,
-    group: CommunitySelectionOptionGroupType.MY_COMMUNITIES,
+    group: CommunitySelectionOptionGroupType.OTHERS,
   });
   const HomeItem = CommunitySelectionOption.createOption({
     id: "home",
     name: "Home",
     icon: CommunitySelectionOptionIconType.HOME,
     link: homeLink,
-    group: CommunitySelectionOptionGroupType.MY_COMMUNITIES,
+    group: CommunitySelectionOptionGroupType.OTHERS,
   });
   const MyPageItem = CommunitySelectionOption.createOption({
     id: me.id,
     name: "u/" + me.username,
     icon: me.avatar,
     link: createUserProfileLink(me.username, "posts"),
-    group: CommunitySelectionOptionGroupType.MY_COMMUNITIES,
+    group: CommunitySelectionOptionGroupType.OTHERS,
   });
 
   return [
+    createPostItem,
     createCommunityItem,
     HomeItem,
     MyPageItem,

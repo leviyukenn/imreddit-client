@@ -7,6 +7,7 @@ export enum CommunitySelectionOptionGroupType {
 export enum CommunitySelectionOptionIconType {
   HOME,
   CREATE_COMMUNITY,
+  CREATE_POST,
   MY_PAGE
 }
 
