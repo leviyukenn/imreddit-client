@@ -89,7 +89,6 @@ function useGoogleAuthentication(
 
   const onLogin = useCallback(
     async (response: GoogleLoginResponse | GoogleLoginResponseOffline) => {
-      debugger;
       setIsSubmitting(true);
 
       const loginResponse = await login({

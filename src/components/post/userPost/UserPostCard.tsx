@@ -20,8 +20,8 @@ import { PostStatus } from "../../../graphql/hooks/useChangePostStatus";
 import { createPostDetailModalLink } from "../../../utils/links";
 import { createComposedClasses } from "../../../utils/utils";
 import PostInfo from "../PostInfo";
-import UpvoteBox from "../upvote/UpvoteBox";
 import PostToolBar from "../postToolBar/PostToolBar";
+import UpvoteBox from "../upvote/UpvoteBox";
 
 interface UserPostCardProps extends CardProps {
   post: RegularPostDetailFragment;
@@ -83,7 +83,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     imagePreview: {
       height: 72,
-      width: 96,
+      minWidth: 96,
       border: "none",
       borderRadius: 4,
       backgroundPosition: "50%",
@@ -97,7 +97,7 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: "#edeff1",
       color: "#878A8C",
       height: 72,
-      width: 96,
+      minWidth: 96,
       border: "none",
       borderRadius: 4,
     },
