@@ -1,5 +1,5 @@
-query UserRole($userId: String!, $communityId: String!) {
-  userRole(userId: $userId, communityId: $communityId) {
+query UserRole($userName: String!, $communityName: String!) {
+  userRole(userName: $userName, communityName: $communityName) {
     ...RegularRole
   }
 }

@@ -23,7 +23,7 @@ const CommunityHomePage = ({
   children,
 }: CommunityProps) => {
   const { community } = useCommunity(communityName, serverSideCommunity);
-  const { userRole } = useUserCommunityRole(community?.id);
+  const { userRole } = useUserCommunityRole(communityName);
   const {
     initiateCommunityAppearance,
     clearCommunityAppearance,

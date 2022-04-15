@@ -1,10 +1,11 @@
 import { Button, createStyles, makeStyles, Theme } from "@material-ui/core";
-import React, { useState } from "react";
-import { useJoinLeaveCommunity } from "../../graphql/hooks/useJoinLeaveCommunity";
+import React, { useCallback, useState } from "react";
+import { useJoinCommunity } from "../../graphql/hooks/useJoinCommunity";
+import { useLeaveCommunity } from "../../graphql/hooks/useLeaveCommunityMutation";
 import { useUserCommunityRole } from "../../graphql/hooks/useUserCommunityRole";
+import { useIsAuth } from "../../utils/hooks/useIsAuth";
 
 interface CommunityJoinLeaveButtonProps {
-  communityId: string;
   communityName: string;
 }
 const useStyles = makeStyles((theme: Theme) =>
@@ -20,16 +21,28 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const CommunityJoinLeaveButton = ({
-  communityId,
   communityName,
 }: CommunityJoinLeaveButtonProps) => {
   const classes = useStyles();
   const [buttonLabel, setButtonLabel] = useState("Joined");
-  const { joinCommunity, leaveCommunity } = useJoinLeaveCommunity(
-    communityId,
-    communityName
-  );
-  const { userRole } = useUserCommunityRole(communityId);
+  const { me, checkIsAuth } = useIsAuth();
+  const { joinCommunity, loading: joinCommunityLoading } = useJoinCommunity();
+  const { userRole, refetch } = useUserCommunityRole(communityName);
+  const {
+    leaveCommunity,
+    loading: leaveCommunityLoading,
+  } = useLeaveCommunity();
+
+  const onJoin = useCallback(async () => {
+    if (!checkIsAuth()) return;
+    const success = await joinCommunity(communityName);
+    if (success) refetch({ userName: me?.username!, communityName });
+  }, [joinCommunity, me, checkIsAuth, communityName]);
+
+  const onLeave = useCallback(async () => {
+    if (!checkIsAuth()) return;
+    await leaveCommunity(communityName);
+  }, [leaveCommunity, me, checkIsAuth, communityName]);
 
   return (
     <>
@@ -44,7 +57,8 @@ const CommunityJoinLeaveButton = ({
           onMouseOut={() => {
             setButtonLabel("Joined");
           }}
-          onClick={leaveCommunity}
+          onClick={onLeave}
+          disabled={leaveCommunityLoading}
         >
           {buttonLabel}
         </Button>
@@ -53,7 +67,8 @@ const CommunityJoinLeaveButton = ({
           variant="contained"
           color="primary"
           className={classes.joinButton}
-          onClick={joinCommunity}
+          onClick={onJoin}
+          disabled={joinCommunityLoading}
         >
           Join
         </Button>

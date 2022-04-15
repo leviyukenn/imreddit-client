@@ -2,15 +2,16 @@ import { useMemo } from "react";
 import { useUserRoleQuery } from "../../generated/graphql";
 import { useIsAuth } from "../../utils/hooks/useIsAuth";
 
-export function useUserCommunityRole(communityId?: string) {
+export function useUserCommunityRole(communityName?: string) {
   const { me, meLoading } = useIsAuth();
-  const { data: userRoleResponse, loading } = useUserRoleQuery({
-    skip: typeof window === "undefined" || !me?.id || !communityId,
-    variables: { userId: me?.id!, communityId: communityId! },
+  const { data: userRoleResponse, loading, refetch } = useUserRoleQuery({
+    skip: typeof window === "undefined" || !me?.username || !communityName,
+    variables: { userName: me?.username!, communityName: communityName! },
   });
 
   const userRole = useMemo(() => userRoleResponse?.userRole, [
     userRoleResponse,
   ]);
-  return { userRole, loading: meLoading || loading };
+
+  return { userRole, refetch, loading: meLoading || loading };
 }

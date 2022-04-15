@@ -1,10 +1,5 @@
-mutation LeaveCommunity($userId: String!, $communityId: String!) {
-  leaveCommunity(userId: $userId, communityId: $communityId) {
-    role {
-      ...RegularRole
-    }
-    errors {
-      ...RegularErrors
-    }
+mutation LeaveCommunity($communityName: String!) {
+  leaveCommunity(communityName: $communityName) {
+    ...RegularRole
   }
 }

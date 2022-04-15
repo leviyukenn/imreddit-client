@@ -33,7 +33,7 @@ const PostToolBar = ({ post }: PostToolBarProps) => {
     post.id
   );
   const { me } = useIsAuth();
-  const { userRole } = useUserCommunityRole(post.community.id);
+  const { userRole } = useUserCommunityRole(post.community.name);
   const { changePostStatus, loading } = useChnagePostStatus();
   const isCreator = me?.id && me.id === post?.creator?.id;
 
