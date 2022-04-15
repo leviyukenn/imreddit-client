@@ -38,7 +38,7 @@ const CommentToolBar = ({ post }: CommentToolBarProps) => {
   }, [post, changePostStatus]);
 
   const moderatorButtons = useMemo(() => {
-    if (!userRole) return null;
+    if (!userRole?.isModerator) return null;
     if (post.postStatus && post.postStatus === PostStatus.REMOVED) {
       return (
         <ApprovePostButton
