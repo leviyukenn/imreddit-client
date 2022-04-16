@@ -140,12 +140,13 @@ function GoogleButton({ isSubmitting, setIsSubmitting }: GoogleButtonProps) {
       <GoogleLogin
         clientId={clientId}
         onSuccess={onLogin}
-        onFailure={(error) =>
+        onFailure={(error) => {
           onOpenSnackbarAlert({
-            message: error,
+            message: FrontendError.ERR0001,
             severity: AlertSeverity.ERROR,
-          })
-        }
+          });
+          console.log(error);
+        }}
         disabled={isSubmitting}
         // uxMode="redirect"
         render={({ onClick }: { onClick: () => void }) => (
