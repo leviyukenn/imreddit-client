@@ -140,9 +140,9 @@ function GoogleButton({ isSubmitting, setIsSubmitting }: GoogleButtonProps) {
       <GoogleLogin
         clientId={clientId}
         onSuccess={onLogin}
-        onFailure={() =>
+        onFailure={(error) =>
           onOpenSnackbarAlert({
-            message: FrontendError.ERR0001,
+            message: error,
             severity: AlertSeverity.ERROR,
           })
         }
