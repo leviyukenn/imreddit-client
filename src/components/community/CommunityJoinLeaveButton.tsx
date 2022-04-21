@@ -1,11 +1,18 @@
-import { Button, createStyles, makeStyles, Theme } from "@material-ui/core";
+import {
+  Button,
+  ButtonProps,
+  createStyles,
+  makeStyles,
+  Theme,
+} from "@material-ui/core";
 import React, { useCallback, useState } from "react";
 import { useJoinCommunity } from "../../graphql/hooks/useJoinCommunity";
 import { useLeaveCommunity } from "../../graphql/hooks/useLeaveCommunityMutation";
 import { useUserCommunityRole } from "../../graphql/hooks/useUserCommunityRole";
 import { useIsAuth } from "../../utils/hooks/useIsAuth";
+import { createComposedClasses } from "../../utils/utils";
 
-interface CommunityJoinLeaveButtonProps {
+interface CommunityJoinLeaveButtonProps extends ButtonProps {
   communityName: string;
 }
 const useStyles = makeStyles((theme: Theme) =>
@@ -14,7 +21,6 @@ const useStyles = makeStyles((theme: Theme) =>
       borderRadius: "9999px",
       textTransform: "none",
       fontWeight: 700,
-      width: "96px",
       lineHeight: "1.5em",
     },
   })
@@ -22,6 +28,8 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const CommunityJoinLeaveButton = ({
   communityName,
+  className,
+  ...props
 }: CommunityJoinLeaveButtonProps) => {
   const classes = useStyles();
   const [buttonLabel, setButtonLabel] = useState("Joined");
@@ -50,7 +58,11 @@ const CommunityJoinLeaveButton = ({
         <Button
           variant="outlined"
           color="primary"
-          className={classes.joinButton}
+          className={
+            className
+              ? createComposedClasses(classes.joinButton, className)
+              : classes.joinButton
+          }
           onMouseOver={() => {
             setButtonLabel("Leave");
           }}
@@ -59,6 +71,7 @@ const CommunityJoinLeaveButton = ({
           }}
           onClick={onLeave}
           disabled={leaveCommunityLoading}
+          {...props}
         >
           {buttonLabel}
         </Button>
@@ -66,9 +79,15 @@ const CommunityJoinLeaveButton = ({
         <Button
           variant="contained"
           color="primary"
-          className={classes.joinButton}
+          className={
+            className
+              ? createComposedClasses(classes.joinButton, className)
+              : classes.joinButton
+          }
           onClick={onJoin}
           disabled={joinCommunityLoading}
+          fullWidth={true}
+          {...props}
         >
           Join
         </Button>

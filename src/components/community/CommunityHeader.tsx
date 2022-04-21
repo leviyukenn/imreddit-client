@@ -63,6 +63,9 @@ const useStyles = makeStyles((theme: Theme) =>
       flex: 1,
       paddingLeft: "1em",
     },
+    joinButton: {
+      width: 96,
+    },
   })
 );
 
@@ -100,10 +103,8 @@ const CommunityHeader = ({ community, pinnedHeader }: CommunityHeaderProps) => {
               )}
             </Box>
             <CommunityJoinLeaveButton
-              {...{
-                communityId: community.id,
-                communityName: community.name,
-              }}
+              communityName={community.name}
+              className={classes.joinButton}
             />
           </Box>
         </Box>

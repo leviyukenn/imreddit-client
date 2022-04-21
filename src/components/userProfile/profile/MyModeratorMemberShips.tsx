@@ -31,6 +31,9 @@ const useStyles = makeStyles((theme: Theme) =>
     communityName: {
       fontWeight: 700,
     },
+    joinButton: {
+      width: 96,
+    },
   })
 );
 
@@ -61,10 +64,8 @@ const MyModeratorMemberShips = ({
             </Typography>
           </Box>
           <CommunityJoinLeaveButton
-            {...{
-              communityId: community.id,
-              communityName: community.name,
-            }}
+            communityName={community.name}
+            className={classes.joinButton}
           />
         </Box>
       ))}

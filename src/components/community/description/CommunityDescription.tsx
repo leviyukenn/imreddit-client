@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   Card,
-  CardActions,
   CardContent,
   CardHeader,
   createStyles,
@@ -15,6 +14,7 @@ import { useRouter } from "next/router";
 import React, { useCallback } from "react";
 import { RegularCommunityFragment } from "../../../generated/graphql";
 import { createPostLink } from "../../../utils/links";
+import CommunityJoinLeaveButton from "../CommunityJoinLeaveButton";
 
 interface CommunityDescriptionProps {
   community: RegularCommunityFragment;
@@ -50,6 +50,14 @@ const useStyles = makeStyles((theme: Theme) =>
       borderRadius: "9999px",
       fontWeight: 700,
       textTransform: "none",
+      marginTop: 12,
+    },
+    actions: {
+      flexDirection: "column",
+    },
+    joinButton: {
+      marginTop: 16,
+      width: "100%",
     },
   })
 );
@@ -92,19 +100,23 @@ const CommunityDescription = ({ community }: CommunityDescriptionProps) => {
             {`Created ${new Date(+community.createdAt).toDateString()}`}
           </Typography>
         </Box>
+        <Box className={classes.actions}>
+          <CommunityJoinLeaveButton
+            communityName={community.name}
+            className={classes.joinButton}
+          />
+          <Button
+            fullWidth
+            disableElevation
+            variant="contained"
+            color="primary"
+            className={classes.createPostButton}
+            onClick={goToCreatePost}
+          >
+            Create Post
+          </Button>
+        </Box>
       </CardContent>
-      <CardActions>
-        <Button
-          fullWidth
-          disableElevation
-          variant="contained"
-          color="primary"
-          className={classes.createPostButton}
-          onClick={goToCreatePost}
-        >
-          Create Post
-        </Button>
-      </CardActions>
     </Card>
   );
 };
