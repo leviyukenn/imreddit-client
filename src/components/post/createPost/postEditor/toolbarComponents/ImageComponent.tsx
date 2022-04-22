@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 import ImageIcon from "@material-ui/icons/Image";
 import { DropzoneArea } from "material-ui-dropzone";
-import React, { useMemo, useRef } from "react";
+import React, { useCallback, useRef } from "react";
 import { SERVER_URL } from "../../../../../const/envVariables";
 import { useUploadImage } from "../../../../../graphql/hooks/useUploadImage";
 
@@ -48,14 +48,17 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const ImageDropZone = ({ onChange }: ImageDropZoneProps) => {
-  const { onUpload, uploading } = useUploadImage();
-
-  const onDrop = useMemo(
-    () =>
-      onUpload((uploadedImagePath: string) => {
-        onChange(SERVER_URL + uploadedImagePath, "auto", "100%");
-      }),
-    [onUpload]
+  const { onUpload, loading } = useUploadImage();
+  const onDrop = useCallback(
+    async (files: File[]) => {
+      for (let i = 0; i < files.length; i++) {
+        const result = await onUpload(files[i]);
+        if (result.data) {
+          onChange(SERVER_URL + result.data, "auto", "100%");
+        }
+      }
+    },
+    [onUpload, onChange]
   );
 
   return (
@@ -74,7 +77,7 @@ const ImageDropZone = ({ onChange }: ImageDropZoneProps) => {
         onDrop={onDrop}
         getFileAddedMessage={undefined}
       />
-      {uploading ? <LinearProgress /> : null}
+      {loading ? <LinearProgress /> : null}
     </Box>
   );
 };

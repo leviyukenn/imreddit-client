@@ -6,6 +6,7 @@ import {
   makeStyles,
   Theme,
 } from "@material-ui/core";
+import { blue } from "@material-ui/core/colors";
 import { EditorState } from "draft-js";
 import { Field, Form, Formik, FormikHelpers } from "formik";
 import React, { useCallback, useState } from "react";
@@ -16,7 +17,6 @@ import { TextInputField } from "../../InputField";
 import { PostType, UploadedImage } from "../../types/types";
 import ImagePostEditor from "./postEditor/ImagePostEditor";
 import PostEditor from "./postEditor/PostEditor";
-import { blue } from "@material-ui/core/colors";
 
 interface FormData {
   title: string;
@@ -63,6 +63,7 @@ const CreatePost = ({ postType, communityId }: CreatePostFormProps) => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [uploadedImages, setUploadedImages] = useState<UploadedImage[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
   const onCreatePost = useCallback(
     async ({ title }: FormData, actions: FormikHelpers<FormData>) => {
@@ -125,7 +126,9 @@ const CreatePost = ({ postType, communityId }: CreatePostFormProps) => {
                   {...{ setGetPostDetailCallback, setEditorState, editorState }}
                 />
               ) : postType === PostType.IMAGE_POST ? (
-                <ImagePostEditor {...{ uploadedImages, setUploadedImages }} />
+                <ImagePostEditor
+                  {...{ uploadedImages, setUploadedImages, setIsUploading }}
+                />
               ) : null}
             </Grid>
             <br />
@@ -133,7 +136,7 @@ const CreatePost = ({ postType, communityId }: CreatePostFormProps) => {
               <Button
                 variant="contained"
                 color="primary"
-                disabled={isSubmitting || !communityId}
+                disabled={isSubmitting || !communityId || isUploading}
                 onClick={submitForm}
                 startIcon={
                   isSubmitting && (

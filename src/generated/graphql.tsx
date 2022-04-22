@@ -890,7 +890,7 @@ export type UploadImageMutation = (
     & Pick<UploadResponse, 'path'>
     & { errors?: Maybe<Array<(
       { __typename?: 'FieldError' }
-      & Pick<FieldError, 'field' | 'message'>
+      & RegularErrorsFragment
     )>> }
   ) }
 );
@@ -2054,13 +2054,12 @@ export const UploadImageDocument = gql`
     mutation UploadImage($file: Upload!) {
   uploadImage(image: $file) {
     errors {
-      field
-      message
+      ...RegularErrors
     }
     path
   }
 }
-    `;
+    ${RegularErrorsFragmentDoc}`;
 export type UploadImageMutationFn = Apollo.MutationFunction<UploadImageMutation, UploadImageMutationVariables>;
 
 /**

@@ -6,7 +6,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
-import React, { useMemo } from "react";
+import React, { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { useUploadImage } from "../../../graphql/hooks/useUploadImage";
 
@@ -50,13 +50,17 @@ const CommunityImageDropzone = ({
   setUploadedImagePath,
 }: CommunityImageDropzoneProps) => {
   const classes = useStyles();
-  const { onUpload, uploading } = useUploadImage();
-  const onDrop = useMemo(
-    () =>
-      onUpload((uploadedImagePath: string) =>
-        setUploadedImagePath(uploadedImagePath)
-      ),
-    [onUpload]
+  const { onUpload, loading } = useUploadImage();
+  const onDrop = useCallback(
+    async (files: File[]) => {
+      for (let i = 0; i < files.length; i++) {
+        const result = await onUpload(files[i]);
+        if (result.data) {
+          setUploadedImagePath(result.data);
+        }
+      }
+    },
+    [onUpload, setUploadedImagePath]
   );
 
   const { getRootProps, getInputProps, isDragActive, open } = useDropzone({
