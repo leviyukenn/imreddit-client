@@ -12,19 +12,14 @@ const CommunityHomeHeartContent = ({
 }) => {
   const { me } = useIsAuth();
   const [orderType, setOrderType] = useState<OrderType>(OrderType.NEW);
-  const Scroll = () => {
-    return (
-      <CommunityPostsInfiniteScroll
-        communityName={communityName}
-        orderType={orderType}
-      />
-    );
-  };
   return (
     <>
       {me ? <CreatePostCard avatar={me.avatar} /> : null}
       <PostOrderTypeTabs orderType={orderType} setOrderType={setOrderType} />
-      <Scroll />
+      <CommunityPostsInfiniteScroll
+        communityName={communityName}
+        orderType={orderType}
+      />
     </>
   );
 };

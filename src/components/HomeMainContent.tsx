@@ -11,14 +11,11 @@ const HomeMainContent = ({}: HomeMainContentProps) => {
   const { data: meResponse } = useMeQuery();
 
   const [orderType, setOrderType] = useState<OrderType>(OrderType.NEW);
-  const Scroll = () => {
-    return <HomePostsInfiniteScroll orderType={orderType} />;
-  };
   return (
     <>
       {meResponse?.me ? <CreatePostCard avatar={meResponse.me.avatar} /> : null}
       <PostOrderTypeTabs orderType={orderType} setOrderType={setOrderType} />
-      <Scroll />
+      <HomePostsInfiniteScroll orderType={orderType} />
     </>
   );
 };
